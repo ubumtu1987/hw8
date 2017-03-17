@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+<script type="text/javascript" src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+<script src = "https://momentjs.com/downloads/moment.js"> </script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+</head>
+<body>
+
+  <div class = "container">
+    <div class = "row">
+        <div class = "col-md-12" Id = "Start">
+
+                 Train Schedule 
+
+        </div>
+
+    </div>
+    <div class = "row">
+		<div class = "col-md-12" Id = "numbersTest">
+         Current time Schedule
+		</div>
+		<div class = "col-md-3" Id = "TrainNA">
+		Train Name
+		</div>
+		<div class = "col-md-3" Id = "TrainD">
+		Destination
+		</div>
+		<div class = "col-md-2" Id = "TrainF">
+		Frequency
+		</div>
+		<div class = "col-md-2" Id = "TrainNext">
+		Next arrival
+		</div>
+		<div class = "col-md-2" Id = "TrainM">
+		Minutes Away
+		</div>
+
+    </div>
+
+   <div class = "row">
+              <div class="form-group">
+                <label for="Train-Name">Train Name:</label>
+                <input type="text" class="form-control" id="Train-Name">
+              </div>
+              <div class="form-group">
+                <label for="Train-Destination">Destinaion:</label>
+                <input type="text" class="form-control" id="Train-Destination">
+              </div>
+		      <div class="form-group">
+                <label for="Train-First">Frist Train Time:</label>
+                <input type="text" class="form-control" id="Train-First">
+              </div>
+
+              <!-- Here we capture the End Year Parameter -->
+              <div class="form-group">
+                <label for="Train-Frequency">Frequency:</label>
+                <input type="text" class="form-control" id="Train-Frequency">
+              </div>
+
+              <!-- Here we have our final submit button -->
+              <button type="submit" class="btn btn-default" id="run-search"><i class="fa fa-search"></i> submit</button>
+    </div>
+    <div class = "row">
+       <div class = "col-md-12" Id = "TimeTest">
+        
+	   </div>
+	   <div class = "col-md-12" Id = "TimeTest2">
+        
+	   </div>
+	    <div class = "col-md-12" Id = "TimeTest3">
+        
+	   </div>
+	   <div class = "col-md-12" Id = "TimeTest4">
+        
+	   </div>
+	   <div class = "col-md-12" Id = "TimeTest5">
+        
+	   </div>
+	</div>
+
+   </div> 
+
+ </div>
+
+ <script type="text/javascript">
+ $(document).ready(function() {
+  
+   //moment().format('LT');   // 11:48 AM
+   
+
+   /*  
+   var mYear = moment().year();
+   var mMonth = moment().month()+1;
+   var mdays = moment().date();
+   console.log(mYear);
+   console.log(mMonth);
+   console.log(mdays);
+   
+   */
+   var config = {
+    apiKey: "AIzaSyBY5W3DO-iQU5CigEr1p5kefqPk7sbQBR4",
+    authDomain: "jm-02-f2735.firebaseapp.com",
+    databaseURL: "https://jm-02-f2735.firebaseio.com",
+    storageBucket: "jm-02-f2735.appspot.com",
+    messagingSenderId: "361546241869"
+    };
+   firebase.initializeApp(config);
+   var database = firebase.database();
+   var TrainNamen = "";
+   var TrainDestinationMan = "";
+   var FTT = "";
+   var Freq = 0;
+
+
+
+   
+   
+
+
+   findClostT(5, "06:00");
+
+   function findClostT(frequencyValue, startTime){
+   var timeTable = startTime.split(":");
+   console.log(timeTable);
+   var timeNow = moment(); 
+   var standardT = moment(); 
+   var compareT = moment();
+   var newTime = null;
+   var remainingTime = null; 
+   var useTime = moment();
+   compareT  = compareT .set({
+           'hour' : timeTable[0],
+           'minute'  : timeTable[1], 
+           'second' : 0
+           });
+
+   
+   var useTime = moment();
+   useTime  = useTime .set({
+           'hour' : timeTable[0],
+           'minute'  : timeTable[1], 
+           'second' : 0
+           });
+  
+  
+
+   var periodMin = moment(standardT).diff(moment(compareT), "minutes")+"";
+   var iNum = parseInt(periodMin);
+   var remainder = iNum%frequencyValue;
+   if(remainder == 0){
+   newTime = standardT.add(frequencyValue, 'm');
+   remainingTime =frequencyValue+"";
+
+
+   }else{
+   console.log(iNum);
+   var maxComputation = Math.floor( iNum/frequencyValue);
+  
+   maxComputation= maxComputation+1;
+   //console.log(maxComputation);
+   maxComputation = maxComputation*frequencyValue;
+   newTime = useTime.add( maxComputation , 'm');
+   //console.log(newTime);
+   remainingTime = moment(newTime).diff(moment(standardT), "minutes")+1;
+
+   } 
+
+   $("#TimeTest").append(timeNow.format("LT"));
+   
+   $("#TimeTest2").append(compareT.format("LT"));
+   //$("#TimeTest3").append(maxComputation);
+   $("#TimeTest4").append(newTime.format("LT"));
+   $("#TimeTest5").append(remainingTime);
+    
+  
+
+
+
+
+
+   //console.log("hi");
+   }
+
+
+   
+
+
+
+
+
+
+
+
+});
+
+
+</script> 	
+
+
+
+</body>
+
+
+
+
+</html>
+
+
+
+  
